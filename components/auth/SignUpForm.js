@@ -16,18 +16,21 @@ const INITIAL_STATE = {
 	passwordConfirmation: ""
 };
 
-const fetcher = async (url) => {
-  const res = await fetch(url);
-  const data = await res.json();
+const sendSignUp = async (values) => {
+	const url = '/api/signup';
+	const res = await fetch(url, {
+		method: 'POST',
+		body: JSON.stringify(values)
+	});
+  	const data = await res.json();
 
-  if (res.status !== 200) {
-    throw new Error(data.message);
-  }
-  return data;
-};
-
-const sendState = (values) => {
-	console.log(values);
+  	if (res.status === 200) {
+    	console.log(data.message);
+  	} else if (res.status === 409) {
+  		console.log(data.message);
+  	} else {
+  		console.log(data.message);
+  	}
 };
 
 const SignUpForm = props => {
@@ -38,7 +41,7 @@ const SignUpForm = props => {
 	    values,
 	    errors,
 	    isSubmitting
-	 } = useFormValidation(INITIAL_STATE, validateSignUpForm, sendState);
+	 } = useFormValidation(INITIAL_STATE, validateSignUpForm, sendSignUp);
 
 	return (
 		<div>
