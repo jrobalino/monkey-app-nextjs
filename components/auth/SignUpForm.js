@@ -1,44 +1,89 @@
 import React, { useState } from 'react';
+import useSWR from 'swr';
+import useFormValidation from '../../utils/useFormValidation';
+import validateSignUpForm from '../../utils/validateSignUpForm';
 
 const formTitle = 'Create account';
 const namePlaceholder = 'Enter your name';
 const emailPlaceholder = 'Enter your email address';
 const passwordPlaceholder = 'Choose a password';
+const passwordConfirmationPlaceholder = 'Confirm your password';
+
+const INITIAL_STATE = {
+	name: "",
+	email: "",
+	password: "",
+	passwordConfirmation: ""
+};
+
+const fetcher = async (url) => {
+  const res = await fetch(url);
+  const data = await res.json();
+
+  if (res.status !== 200) {
+    throw new Error(data.message);
+  }
+  return data;
+};
+
+const sendState = (values) => {
+	console.log(values);
+};
 
 const SignUpForm = props => {
-	const [isSubmitting, setSubmitting] = useState(false);
-
-	const handleSubmit = () => {
-		console.log('Handle submit');
-	}
-
-	const handleChange = () => {
-		console.log('Handle change');
-	}
+	const {
+	    handleSubmit,
+	    handleChange,
+	    handleBlur,
+	    values,
+	    errors,
+	    isSubmitting
+	 } = useFormValidation(INITIAL_STATE, validateSignUpForm, sendState);
 
 	return (
 		<div>
 			<h2>{formTitle}</h2>
 		  	<form onSubmit={handleSubmit}>
+		  		{errors.name && <div>{errors.name}</div>}
 		  		<div>
 			  		<input
-			          onChange={handleChange}
 			          name="name"
+			          onChange={handleChange}
+			          onBlur={handleBlur}
+			          value={values.name}
 			          placeholder={namePlaceholder}
 			        />
 		        </div>
+		        {errors.email && <div>{errors.email}</div>}
 		        <div>
 			  		<input
-			          onChange={handleChange}
 			          name="email"
+			          onChange={handleChange}
+			          onBlur={handleBlur}
+			          value={values.email}
 			          placeholder={emailPlaceholder}
 			        />
 		        </div>
+		        {errors.password && <div>{errors.password}</div>}
 		        <div>
 			  		<input
+			  		  name="password"
+			          type="password"
 			          onChange={handleChange}
-			          name="password"
+			          onBlur={handleBlur}
+			          value={values.password}
 			          placeholder={passwordPlaceholder}
+			        />
+		        </div>
+		        {errors.passwordConfirmation && <div>{errors.passwordConfirmation}</div>}
+		        <div>
+			  		<input
+			  		  name="passwordConfirmation"
+			          type="password"
+			          onChange={handleChange}
+			          onBlur={handleBlur}
+			          value={values.passwordConfirmation}
+			          placeholder={passwordConfirmationPlaceholder}
 			        />
 		        </div>
 		        <div>
