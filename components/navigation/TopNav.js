@@ -17,7 +17,7 @@ const TopNav = () => {
               </Link>
             </li>
             <li>
-              <a href="/api/login">Login</a>
+              <a href="/auth/signup">Sign Up</a>
             </li>
           </ul>
         </ul>
