@@ -17,7 +17,14 @@ const TopNav = () => {
               </Link>
             </li>
             <li>
-              <a href="/auth/signup">Sign Up</a>
+              <Link href="/auth/login">
+                <a>Log in</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/auth/signup">
+                <a>Sign up</a>
+              </Link>
             </li>
           </ul>
         </ul>

@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
 import useFormValidation from '../../utils/useFormValidation';
-import validateSignUpForm from '../../utils/validateSignUpForm';
+import validateLogInForm from '../../utils/validateLogInForm';
 
-const formTitle = 'Create account';
-const namePlaceholder = 'Enter your name';
+const formTitle = 'Sign in to your account';
 const emailPlaceholder = 'Enter your email address';
-const passwordPlaceholder = 'Choose a password';
-const passwordConfirmationPlaceholder = 'Confirm your password';
+const passwordPlaceholder = 'Enter your password';
 
 const INITIAL_STATE = {
-	name: "",
 	email: "",
-	password: "",
-	passwordConfirmation: ""
+	password: ""
 };
 
-const sendSignUp = async (values) => {
-	const url = '/api/signup';
+const sendLogIn = async (values) => {
+	const url = '/api/login';
 	const res = await fetch(url, {
 		method: 'POST',
 		body: JSON.stringify(values)
@@ -25,14 +21,14 @@ const sendSignUp = async (values) => {
 
   	if (res.status === 200) {
     	console.log(data.message);
-  	} else if (res.status === 409) {
+  	} else if (res.status === 401) {
   		console.log(data.message);
   	} else {
   		console.log(data.message);
   	}
 };
 
-const SignUpForm = props => {
+const LogInForm = props => {
 	const {
 	    handleSubmit,
 	    handleChange,
@@ -40,22 +36,12 @@ const SignUpForm = props => {
 	    values,
 	    errors,
 	    isSubmitting
-	 } = useFormValidation(INITIAL_STATE, validateSignUpForm, sendSignUp);
+	 } = useFormValidation(INITIAL_STATE, validateLogInForm, sendLogIn);
 
 	return (
 		<div>
 			<h2>{formTitle}</h2>
 		  	<form onSubmit={handleSubmit}>
-		  		{errors.name && <div>{errors.name}</div>}
-		  		<div>
-			  		<input
-			          name="name"
-			          onChange={handleChange}
-			          onBlur={handleBlur}
-			          value={values.name}
-			          placeholder={namePlaceholder}
-			        />
-		        </div>
 		        {errors.email && <div>{errors.email}</div>}
 		        <div>
 			  		<input
@@ -77,17 +63,6 @@ const SignUpForm = props => {
 			          placeholder={passwordPlaceholder}
 			        />
 		        </div>
-		        {errors.passwordConfirmation && <div>{errors.passwordConfirmation}</div>}
-		        <div>
-			  		<input
-			  		  name="passwordConfirmation"
-			          type="password"
-			          onChange={handleChange}
-			          onBlur={handleBlur}
-			          value={values.passwordConfirmation}
-			          placeholder={passwordConfirmationPlaceholder}
-			        />
-		        </div>
 		        <div>
 		          <button disabled={isSubmitting} type="submit">
 		            Submit
@@ -98,4 +73,4 @@ const SignUpForm = props => {
   	);
 };
 
-export default SignUpForm;
+export default LogInForm;
